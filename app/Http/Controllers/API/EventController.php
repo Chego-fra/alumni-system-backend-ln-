@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EventPosted;
 use App\Models\AlumniProfile;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -45,9 +46,7 @@ class EventController extends Controller
         $alumniEmails = AlumniProfile::pluck('email'); // Fetch all alumni emails
 
         foreach ($alumniEmails as $email) {
-            Mail::raw("A new event '{$event->title}' is scheduled on {$event->date}.", function ($message) use ($email) {
-                $message->to($email)->subject('New Event Alert');
-            });
+            Mail::to($email)->send(new EventPosted($event));
         }
 
         return response()->json($event, 201);

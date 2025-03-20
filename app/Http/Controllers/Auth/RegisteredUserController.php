@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeUser;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -34,9 +35,7 @@ class RegisteredUserController extends Controller
         ]);
 
             // Send welcome email
-            Mail::raw("Welcome to the Alumni System, {$user->name}! We're excited to have you.", function ($message) use ($user) {
-                $message->to($user->email)->subject('Welcome to Alumni System');
-            });
+            Mail::to($user->email)->send(new WelcomeUser($user));
 
         event(new Registered($user));
 

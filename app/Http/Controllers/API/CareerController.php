@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\JobPosted;
 use App\Models\AlumniProfile;
 use App\Models\Career;
 use Illuminate\Http\Request;
@@ -49,9 +50,7 @@ class CareerController extends Controller
         $alumniEmails = AlumniProfile::pluck('email'); // Fetch all alumni emails
 
         foreach ($alumniEmails as $email) {
-            Mail::raw("A new career opportunity '{$career->title}' is available at {$career->company}.", function ($message) use ($email) {
-                $message->to($email)->subject('New Job Posting');
-            });
+            Mail::to($email)->send(new JobPosted($career));
         }
 
         return response()->json($career, 201);
