@@ -2,16 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\AlumniProfile;
 use App\Models\Career;
+use App\Models\CareerReply;
 use App\Models\Event;
 use App\Models\Gallery;
 use App\Models\Resource;
-use App\Models\CareerReply;
 use App\Models\RSVP;
+use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,9 +23,25 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'Alumni User',
+            'email' => 'alumni@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'alumni',
+        ]);
+
+        User::create([
+            'name' => 'Faculty User',
+            'email' => 'faculty@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'faculty',
         ]);
 
         AlumniProfile::factory(10)->create();
