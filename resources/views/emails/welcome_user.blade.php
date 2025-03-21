@@ -5,12 +5,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #F1F0FF;
+            background-color: #C3EBFA;
             margin: 0;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .container {
-            background-color: #EDF9FD;
+            background-color: white;
             padding: 20px;
             border-radius: 8px;
             max-width: 600px;
@@ -19,22 +22,11 @@
             text-align: center;
         }
         h2 {
-            color: #CFCEFF;
+            color: purple;
         }
         p {
             color: #333;
             line-height: 1.5;
-        }
-        .button {
-            display: inline-block;
-            background-color: #C3EBFA;
-            padding: 10px 20px;
-            text-align: center;
-            color: #333;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
         }
     </style>
 </head>
