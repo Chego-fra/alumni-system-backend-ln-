@@ -29,10 +29,16 @@ class UserController extends Controller
         }
     
         return response()->json([
-            'user' => $user,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role, // Ensure role is explicitly included
+            ],
             'message' => $message
         ]);
     }
+    
     
 
     /**
@@ -86,11 +92,12 @@ class UserController extends Controller
         if (Auth::user()->role !== 'admin') {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
-
+    
+        $users = User::orderBy('created_at', 'desc')->paginate(10, ['id', 'name', 'email', 'role', 'created_at']);
+    
         return response()->json($users);
     }
+    
 
     /**
      * Change user role (Admin only).
@@ -108,7 +115,16 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->update(['role' => $request->role]);
 
-        return response()->json(['message' => 'User role updated successfully', 'user' => $user]);
+        return response()->json([
+            'message' => 'User role updated successfully',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+            ]
+        ]);
+        
     }
 
     /**

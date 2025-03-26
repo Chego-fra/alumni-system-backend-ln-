@@ -28,10 +28,14 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+
+        $role = $request->role ?? 'alumni'; // Default to alumni
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->string('password')),
+            'role' => $role,
         ]);
 
             // Send welcome email
