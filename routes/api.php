@@ -8,20 +8,50 @@ use App\Http\Controllers\API\GalleryController;
 use App\Http\Controllers\API\ResourceController;
 use App\Http\Controllers\API\RSVPController;
 use App\Http\Controllers\API\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
+
+
+
+
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', function (Request $request) {
+        return response()->json($request->user());
+    });
+
+    Route::put('/user/update-profile', [UserController::class, 'updateProfile']); // Update name & email
+    Route::put('/user/update-password', [UserController::class, 'updatePassword']); // Change password
+
+    // ✅ New API to return count of users based on roles
+    Route::get('/dashboard/counts', function () {
+        return response()->json([
+            'alumni' => User::where('role', 'alumni')->count(),
+            'faculty' => User::where('role', 'faculty')->count(),
+            'admin' => User::where('role', 'admin')->count(),
+        ]);
+    });
+
+    // Admin-only routes
+    Route::middleware('can:admin-only')->group(function () {
+        Route::get('/users', [UserController::class, 'getAllUsers']); // Get all users
+        Route::put('/user/{id}/change-role', [UserController::class, 'changeUserRole']); // Change role
+        Route::delete('/user/{id}', [UserController::class, 'deleteUser']); // Delete user
+    });
+});
+
+
 
 
 
 // Middleware for authenticated users
 // Route::middleware(['auth:sanctum'])->group(function () {
 //     Route::get('/user', function (Request $request) {
-//         return response()->json([
-//             'id' => $request->user()->id,
-//             'name' => $request->user()->name,
-//             'email' => $request->user()->email,
-//             'role' => $request->user()->role, // Ensure role is included
-//         ]);
+//         return response()->json($request->user());
 //     });
 
 //     Route::put('/user/update-profile', [UserController::class, 'updateProfile']); // Update name & email
@@ -34,27 +64,6 @@ use Illuminate\Support\Facades\Route;
 //         Route::delete('/user/{id}', [UserController::class, 'deleteUser']); // Delete user
 //     });
 // });
-
-
-
-
-
-// Middleware for authenticated users
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/user', function (Request $request) {
-        return response()->json($request->user());
-    });
-
-    Route::put('/user/update-profile', [UserController::class, 'updateProfile']); // Update name & email
-    Route::put('/user/update-password', [UserController::class, 'updatePassword']); // Change password
-
-    // Admin-only routes
-    Route::middleware('can:admin-only')->group(function () {
-        Route::get('/users', [UserController::class, 'getAllUsers']); // Get all users
-        Route::put('/user/{id}/change-role', [UserController::class, 'changeUserRole']); // Change role
-        Route::delete('/user/{id}', [UserController::class, 'deleteUser']); // Delete user
-    });
-});
 
 
 
