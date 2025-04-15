@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\AlumniProfile;
 use App\Models\Career;
+use App\Models\AlumniProfile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Career>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
 class CareerFactory extends Factory
 {

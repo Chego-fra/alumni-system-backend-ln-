@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\AlumniProfile;
-use App\Models\Event;
 use App\Models\RSVP;
+use App\Models\Events;
+use App\Models\AlumniProfile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,12 +17,11 @@ class RSVPFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
-     protected $model = RSVP::class;
+    protected $model = RSVP::class;
     public function definition(): array
     {
         return [
-            'event_id' => Event::factory(),
+            'event_id' => Events::factory(),
             'alumni_id' => AlumniProfile::factory(),
         ];
     }

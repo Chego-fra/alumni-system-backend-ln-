@@ -12,7 +12,6 @@ class AlumniProfileFactory extends Factory
 {
     /**
      * Define the model's default state.
-     * 
      *
      * @return array<string, mixed>
      */

@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\AlumniProfile;
-use App\Models\Career;
-use App\Models\CareerReply;
-use App\Models\Event;
-use App\Models\Gallery;
-use App\Models\Resource;
 use App\Models\RSVP;
 use App\Models\User;
+use App\Models\Career;
+use App\Models\Events;
+use App\Models\Gallery;
+use App\Models\Resources;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\AlumniProfile;
+use App\Models\CareerReplies;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -46,10 +46,10 @@ class DatabaseSeeder extends Seeder
 
         AlumniProfile::factory(10)->create();
         Career::factory(5)->create();
-        Event::factory(5)->create();
+        Events::factory(5)->create();
         Gallery::factory(5)->create();
-        Resource::factory(5)->create();
-        CareerReply::factory(10)->create();
+        Resources::factory(5)->create();
+        CareerReplies::factory(10)->create();
         RSVP::factory(10)->create();
     }
 }

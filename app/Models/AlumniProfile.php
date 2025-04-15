@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+use App\Traits\ModelHelpers\AlumniModelHelper;
+use App\Traits\Relationships\AlumniRelationships;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AlumniProfile extends Model
 {
     use HasFactory;
+    use  AlumniRelationships;
+    use AlumniModelHelper;
+    const TABLE = 'alumni_profiles';
+    protected $table = self::TABLE;
 
     protected $fillable = [
         'name',
@@ -18,20 +25,18 @@ class AlumniProfile extends Model
         'location',
         'linkedin',
         'twitter',
+    ];  
+
+    protected $casts = [
+        'graduation_year' => 'integer',
+        'name' => 'string',
+        'image' => 'string',
+        'major' => 'string',
+        'company' => 'string',
+        'location' => 'string',
+        'linkedin' => 'string',
+        'twitter' => 'string',
     ];
+    
 
-    public function careers()
-    {
-        return $this->hasMany(Career::class, 'posted_by');
-    }
-
-    public function careerReplies()
-    {
-        return $this->hasMany(CareerReply::class, 'alumni_id');
-    }
-
-    public function rsvps()
-    {
-        return $this->hasMany(RSVP::class, 'alumni_id');
-    }
 }
