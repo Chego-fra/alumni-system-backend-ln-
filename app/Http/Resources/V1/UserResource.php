@@ -19,12 +19,15 @@ class UserResource extends JsonResource
             'type' =>  'alumniprofile',
             'id' => $this->id,
             'attributes' => [
-                'id'    => $this->id,
-                'name'  => $this->name,
-                'email' => $this->email,
-                'role' => $this->role,
-                'created_at' => $this->created_at,
-                'updated_at' => $this->updated_at,
+                'id'             => $this->id,
+                'name'           => $this->getDisplayName(),
+                'email'          => $this->email,
+                'role'           => $this->role,
+                'role_label'     => $this->getRoleLabel(),   
+                'is_verified'    => $this->isVerified(),     
+                'summary'        => $this->getUserSummary(),
+                'created_at'     => $this->created_at,
+                'updated_at'     => $this->updated_at,
             ],
             'links' => [
                 'self' => route('users.show', $this->id)
