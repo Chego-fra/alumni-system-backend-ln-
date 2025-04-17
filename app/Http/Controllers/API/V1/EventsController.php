@@ -65,8 +65,8 @@ class EventsController extends Controller
             'image' => $validated['image'] ?? null,
         ]);
 
-                    // After the $event is created
-            $users = User::all(); // get all users
+                    
+            $users = User::all(); 
             
             foreach ($users as $user) {
                 Mail::to($user->email)->queue(new EventPosted($event));
