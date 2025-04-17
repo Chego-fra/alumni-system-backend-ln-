@@ -2,13 +2,14 @@
 
 namespace App\Mail;
 
-use App\Models\Event;
+
+use App\Models\Events;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class EventPosted extends Mailable
 {
@@ -19,7 +20,7 @@ class EventPosted extends Mailable
      */
 
     public $event;
-    public function __construct(Event $event)
+    public function __construct(Events $event)
     {
         $this->event = $event;
     }

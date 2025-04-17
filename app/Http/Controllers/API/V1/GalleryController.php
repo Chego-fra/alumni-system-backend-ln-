@@ -38,6 +38,8 @@ class GalleryController extends Controller
             'description' => 'nullable|string',
             'posted_by' => 'required|string',
         ]);
+
+        $validated['file_path'] = $request->file('image')->store('gallery', 'public');
     
         $gallery = Gallery::create([
         'title' => $validated['title'],

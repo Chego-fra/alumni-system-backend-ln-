@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Models\User;
 use App\Models\Events;
+use App\Mail\EventPosted;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Resources\V1\EventsResource;
 use App\Http\Resources\V1\EventsCollection;
 
@@ -19,8 +22,8 @@ class EventsController extends Controller
     
         if ($request->has('search')) {
             $searchTerm = $request->input('search');
-            $query->where('name', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('body', 'LIKE', "%{$searchTerm}%");
+            $query->where('title', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('description', 'LIKE', "%{$searchTerm}%");
         }
     
         
@@ -47,6 +50,10 @@ class EventsController extends Controller
             'image' => 'nullable|string',
         ]);
     
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('events', 'public');
+        }
+
         $event = Events::create([
             'title' => $validated['title'],
             'date' => $validated['date'],
@@ -57,6 +64,14 @@ class EventsController extends Controller
             'attendees' => $validated['attendees'] ?? null,
             'image' => $validated['image'] ?? null,
         ]);
+
+                    // After the $event is created
+            $users = User::all(); // get all users
+            
+            foreach ($users as $user) {
+                Mail::to($user->email)->queue(new EventPosted($event));
+            }
+
     
         return (new EventsResource($event))
             ->response()
@@ -91,6 +106,10 @@ class EventsController extends Controller
             'image' => 'nullable|string',
         ]);
     
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('events', 'public');
+        }
+
         $events->update([
             'title' => $validated['title'],
             'date' => $validated['date'],

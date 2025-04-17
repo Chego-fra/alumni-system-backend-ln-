@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\AlumniProfile;
 use App\Http\Controllers\Controller;
@@ -16,15 +17,13 @@ class AlumniProfileController extends Controller
     public function index(Request $request)
     {
         $query = AlumniProfile::query();
+        Log::info("Fetching alumni profiles with query: " . $query->toSql());
     
         if ($request->has('search')) {
             $searchTerm = $request->input('search');
+            Log::info("Search term: {$searchTerm}");
             $query->where('name', 'LIKE', "%{$searchTerm}%")
                   ->orWhere('body', 'LIKE', "%{$searchTerm}%");
-        }
-    
-        if ($request->has('graduation_year')) {
-            $query->graduatedIn($request->input('graduation_year'));
         }
     
         $alumniProfile = $query->latest()->paginate(11);
@@ -70,14 +69,10 @@ class AlumniProfileController extends Controller
      */
     public function show(AlumniProfile $alumniProfile)
     {
-        $alumniProfile->load(['careers', 'careerReplies', 'rsvps']);
-        
-        return response()->json([
-            'profile' => new AlumniProfileResource($alumniProfile),
-            'summary' => $alumniProfile->getProfileSummary(),
-            'social_links' => $alumniProfile->fullSocialLinks(),
-            'latest_career' => $alumniProfile->latestCareer(), 
-        ], 200);
+        $alumniProfile->load(['careers', 'careerReplies', 'rsvps']);    
+        return (new AlumniProfileResource($alumniProfile))
+        ->response()
+        ->setStatusCode(200);
     }
     
 

@@ -16,7 +16,7 @@ class EventsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'type' =>  'alumniprofile',
+            'type' =>  'event',
             'id' => $this->id,
             'attributes' => [
                 'title'       => $this->title,

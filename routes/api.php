@@ -4,6 +4,7 @@
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\API\V1\RSVPController;
 use App\Http\Controllers\API\V1\UserController;
 use App\Http\Controllers\API\V1\CareerController;
@@ -17,7 +18,12 @@ use App\Http\Controllers\API\V1\CareerRepliesController;
 
 
 
-Route::group(['prefix' => 'v1', ], function () {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
+Route::group(['prefix' => 'v1', 'middleware' =>'auth:sanctum'], function () {
     Route::apiResource('alumniProfile', AlumniProfileController::class);
 
     Route::apiResource('career', CareerController::class);
@@ -41,6 +47,8 @@ Route::group(['prefix' => 'v1', ], function () {
     ]);
 
     Route::apiResource('users', UserController::class);
+
+    Route::get('dashboardCount', [DashboardController::class, 'index']);
 
 });
 
