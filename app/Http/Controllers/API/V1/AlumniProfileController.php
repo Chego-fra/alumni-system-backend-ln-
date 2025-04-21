@@ -23,7 +23,7 @@ class AlumniProfileController extends Controller
             $searchTerm = $request->input('search');
             Log::info("Search term: {$searchTerm}");
             $query->where('name', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('body', 'LIKE', "%{$searchTerm}%");
+                  ->orWhere('major', 'LIKE', "%{$searchTerm}%");
         }
     
         $alumniProfile = $query->latest()->paginate(11);

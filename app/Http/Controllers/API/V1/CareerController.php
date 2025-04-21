@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Models\User;
 use App\Models\Career;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CareerResource;
 use App\Http\Resources\V1\CareerCollection;
+use App\Mail\JobPosted;
+use Illuminate\Support\Facades\Mail;
 
 class CareerController extends Controller
 {
@@ -53,6 +56,13 @@ class CareerController extends Controller
             'image' => $validated['image'] ?? null,
             'date_posted' => $validated['date_posted'],
         ]);
+
+        $users = User::all();
+    
+        foreach ($users as $user) {
+            Mail::to($user->email)->queue(new JobPosted($career));
+        }
+
     
         return (new CareerResource($career))
             ->response()

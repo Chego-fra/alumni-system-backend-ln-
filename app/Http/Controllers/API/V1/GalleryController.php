@@ -36,7 +36,7 @@ class GalleryController extends Controller
             'type' => 'required|in:image,video',
             'file_path' => 'required|string',
             'description' => 'nullable|string',
-            'posted_by' => 'required|string',
+            'posted_by' => 'required|integer',
         ]);
 
         $validated['file_path'] = $request->file('image')->store('gallery', 'public');
